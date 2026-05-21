@@ -2,6 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Play } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import caloiImg from "@/assets/project-caloi.png";
+import tohfaverseImg from "@/assets/project-tohfaverse.png";
+import flobordImg from "@/assets/project-flobord.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
