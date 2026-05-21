@@ -31,9 +31,9 @@ const tags = [
 ];
 
 const featured = [
-  { title: "Caloi AI", tag: "AI Health", price: "Live on Play Store", ribbon: "Most Popular" },
-  { title: "Tohfaverse", tag: "E-commerce", price: "Live", ribbon: "New" },
-  { title: "FloBord", tag: "SaaS", price: "Live" },
+  { title: "Caloi AI", tag: "AI Health", price: "Live on Play Store", ribbon: "Most Popular", image: caloiImg },
+  { title: "Tohfaverse", tag: "E-commerce", price: "Live", ribbon: "New", image: tohfaverseImg },
+  { title: "FloBord", tag: "SaaS", price: "Live", image: flobordImg },
 ];
 
 function Home() {
