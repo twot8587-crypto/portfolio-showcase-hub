@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Star } from "lucide-react";
+import { ArrowRight, Menu, Star, X } from "lucide-react";
+import { useState } from "react";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -9,6 +10,8 @@ const nav = [
 ] as const;
 
 export function SiteHeader() {
+  const [open, setOpen] = useState(false);
+
   return (
     <header className="sticky top-0 z-40 border-b-2 border-foreground/10 backdrop-blur-md bg-background/80">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -32,10 +35,42 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <Link to="/about" className="pill-btn pill-btn-primary">
+        <Link to="/about" className="hidden md:inline-flex pill-btn pill-btn-primary">
           Get in touch <ArrowRight className="h-4 w-4" />
         </Link>
+
+        <button
+          type="button"
+          aria-label="Toggle menu"
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+          className="md:hidden ink-card p-2"
+        >
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
       </div>
+
+      {open && (
+        <div className="md:hidden border-t-2 border-foreground/10 bg-background">
+          <div className="mx-auto max-w-7xl px-6 py-4 flex flex-col gap-2">
+            {nav.map((n) => (
+              <Link
+                key={n.to}
+                to={n.to}
+                activeOptions={{ exact: true }}
+                onClick={() => setOpen(false)}
+                className="px-4 py-2 rounded-full text-xs font-mono uppercase tracking-wider hover:bg-foreground/5"
+                activeProps={{ className: "px-4 py-2 rounded-full text-xs font-mono uppercase tracking-wider bg-foreground text-background" }}
+              >
+                {n.label}
+              </Link>
+            ))}
+            <Link to="/about" onClick={() => setOpen(false)} className="pill-btn pill-btn-primary mt-2 justify-center">
+              Get in touch <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
