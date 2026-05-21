@@ -112,7 +112,7 @@ function Home() {
                     {p.ribbon}
                   </div>
                 )}
-                <div className="aspect-[4/3] rounded-lg border-2 border-foreground/80 mb-5 overflow-hidden bg-card">
+                <div className="aspect-square rounded-2xl border-2 border-foreground/80 mb-5 overflow-hidden bg-card">
                   <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" className="w-full h-full object-cover object-top" />
                 </div>
                 <div className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">{p.tag}</div>
