@@ -2,6 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import caloiImg from "@/assets/project-caloi.png";
+import tohfaverseImg from "@/assets/project-tohfaverse.png";
+import flobordImg from "@/assets/project-flobord.png";
+import unitsImg from "@/assets/project-unitsconverter.png";
 
 export const Route = createFileRoute("/work")({
   head: () => ({
@@ -20,6 +24,7 @@ type Project = {
   title: string;
   year: string;
   tag: string;
+  image: string;
   ribbon?: string;
   desc: string;
   bullets: string[];
@@ -32,6 +37,7 @@ const projects: Project[] = [
     year: "2025",
     tag: "AI Health",
     ribbon: "Most Popular",
+    image: caloiImg,
     desc: "AI-driven calorie tracker that analyzes food images to estimate calories, macros & glucose impact.",
     bullets: [
       "Gemini Vision API — 90%+ accuracy across 500+ food categories",
@@ -49,6 +55,7 @@ const projects: Project[] = [
     year: "2025",
     tag: "E-commerce",
     ribbon: "New",
+    image: tohfaverseImg,
     desc: "Full-stack gift e-commerce platform with admin panel and AI-powered gift recommendations.",
     bullets: [
       "AI gift-recommendation engine based on recipient & occasion",
@@ -64,6 +71,7 @@ const projects: Project[] = [
     title: "FloBord",
     year: "2025",
     tag: "SaaS / Productivity",
+    image: flobordImg,
     desc: "Collaborative workflow board with drag-and-drop cards, real-time sync and an AI task assistant.",
     bullets: [
       "AI assistant auto-generates subtasks, deadlines & priorities",
@@ -79,6 +87,7 @@ const projects: Project[] = [
     title: "UnitsConverters.in",
     year: "2024",
     tag: "Web Tool",
+    image: unitsImg,
     desc: "High-performance unit conversion site with natural-language AI queries and 95+ PageSpeed score.",
     bullets: [
       "Natural-language AI input — e.g. \"5 miles to km\"",
@@ -120,8 +129,8 @@ function Work() {
                   {p.ribbon}
                 </div>
               )}
-              <div className="aspect-[16/9] rounded-lg border-2 border-dashed border-foreground/30 mb-5 flex items-center justify-center text-muted-foreground font-mono text-xs">
-                {p.title.toLowerCase().replace(/\s+/g, "-")}.png
+              <div className="aspect-[16/9] rounded-lg border-2 border-foreground/80 mb-5 overflow-hidden bg-card">
+                <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" className="w-full h-full object-cover object-top" />
               </div>
               <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
                 <span>{p.tag}</span><span>{p.year}</span>

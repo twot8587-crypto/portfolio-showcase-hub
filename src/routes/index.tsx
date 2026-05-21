@@ -2,6 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Play } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import caloiImg from "@/assets/project-caloi.png";
+import tohfaverseImg from "@/assets/project-tohfaverse.png";
+import flobordImg from "@/assets/project-flobord.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -28,9 +31,9 @@ const tags = [
 ];
 
 const featured = [
-  { title: "Caloi AI", tag: "AI Health", price: "Live on Play Store", ribbon: "Most Popular" },
-  { title: "Tohfaverse", tag: "E-commerce", price: "Live", ribbon: "New" },
-  { title: "FloBord", tag: "SaaS", price: "Live" },
+  { title: "Caloi AI", tag: "AI Health", price: "Live on Play Store", ribbon: "Most Popular", image: caloiImg },
+  { title: "Tohfaverse", tag: "E-commerce", price: "Live", ribbon: "New", image: tohfaverseImg },
+  { title: "FloBord", tag: "SaaS", price: "Live", image: flobordImg },
 ];
 
 function Home() {
@@ -109,8 +112,8 @@ function Home() {
                     {p.ribbon}
                   </div>
                 )}
-                <div className="aspect-[4/3] rounded-lg border-2 border-dashed border-foreground/30 mb-5 flex items-center justify-center text-muted-foreground font-mono text-xs">
-                  {p.title.toLowerCase().replace(/\s+/g, "-")}.png
+                <div className="aspect-[4/3] rounded-lg border-2 border-foreground/80 mb-5 overflow-hidden bg-card">
+                  <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" className="w-full h-full object-cover object-top" />
                 </div>
                 <div className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">{p.tag}</div>
                 <h3 className="font-display text-2xl mt-1">{p.title}</h3>
