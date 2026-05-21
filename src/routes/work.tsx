@@ -129,8 +129,8 @@ function Work() {
                   {p.ribbon}
                 </div>
               )}
-              <div className="aspect-square rounded-2xl border-2 border-foreground/80 mb-5 overflow-hidden bg-card">
-                <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" className="w-full h-full object-cover object-top" />
+              <div className="aspect-[16/10] rounded-2xl border-2 border-foreground/80 mb-5 overflow-hidden bg-card">
+                <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" className="w-full h-full object-contain" />
               </div>
               <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
                 <span>{p.tag}</span><span>{p.year}</span>
