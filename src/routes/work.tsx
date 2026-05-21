@@ -37,6 +37,7 @@ const projects: Project[] = [
     year: "2025",
     tag: "AI Health",
     ribbon: "Most Popular",
+    image: caloiImg,
     desc: "AI-driven calorie tracker that analyzes food images to estimate calories, macros & glucose impact.",
     bullets: [
       "Gemini Vision API — 90%+ accuracy across 500+ food categories",
@@ -54,6 +55,7 @@ const projects: Project[] = [
     year: "2025",
     tag: "E-commerce",
     ribbon: "New",
+    image: tohfaverseImg,
     desc: "Full-stack gift e-commerce platform with admin panel and AI-powered gift recommendations.",
     bullets: [
       "AI gift-recommendation engine based on recipient & occasion",
@@ -69,6 +71,7 @@ const projects: Project[] = [
     title: "FloBord",
     year: "2025",
     tag: "SaaS / Productivity",
+    image: flobordImg,
     desc: "Collaborative workflow board with drag-and-drop cards, real-time sync and an AI task assistant.",
     bullets: [
       "AI assistant auto-generates subtasks, deadlines & priorities",
@@ -84,6 +87,7 @@ const projects: Project[] = [
     title: "UnitsConverters.in",
     year: "2024",
     tag: "Web Tool",
+    image: unitsImg,
     desc: "High-performance unit conversion site with natural-language AI queries and 95+ PageSpeed score.",
     bullets: [
       "Natural-language AI input — e.g. \"5 miles to km\"",
