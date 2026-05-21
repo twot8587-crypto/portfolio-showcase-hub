@@ -54,7 +54,7 @@ export function SiteFooter() {
           </ul>
         </div>
       </div>
-      <div className="border-t-2 border-foreground/10 py-6 text-center text-xs font-mono text-muted-foreground">
+      <div className="bg-[#faf7f0] border-t-2 border-foreground/10 py-6 text-center text-xs font-mono text-muted-foreground">
         © 2026 Himanshu Sharma — Built with React, caffeine, and curiosity.
       </div>
     </footer>
