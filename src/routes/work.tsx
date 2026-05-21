@@ -24,7 +24,12 @@ type Project = {
   title: string;
   year: string;
   tag: string;
+  image: string;
   ribbon?: string;
+  desc: string;
+  bullets: string[];
+  links: Link[];
+};
   desc: string;
   bullets: string[];
   links: Link[];
