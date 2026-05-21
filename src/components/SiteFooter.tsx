@@ -10,7 +10,14 @@ const socials = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-32 border-t-2 border-foreground/10">
+    <footer
+      className="mt-32 border-t-2 border-foreground/10 bg-[#faf7f0]"
+      style={{
+        backgroundImage:
+          "linear-gradient(to right, rgba(200,140,90,0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(200,140,90,0.18) 1px, transparent 1px)",
+        backgroundSize: "28px 28px",
+      }}
+    >
       <div className="mx-auto max-w-7xl px-6 py-16 grid gap-12 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="font-mono text-sm uppercase tracking-widest">
