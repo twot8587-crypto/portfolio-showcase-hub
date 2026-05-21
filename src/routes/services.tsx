@@ -53,6 +53,18 @@ const services = [
       "Optional Android build & Play Store launch",
     ],
   },
+  {
+    tag: "App — 3–6 weeks",
+    title: "AI App Building (Web + Android)",
+    price: "From ₹50k",
+    desc: "End-to-end AI-powered apps — from idea to a live Android/web product with AI features baked in (vision, chat, recommendations).",
+    bullets: [
+      "AI-first product design — vision, chatbots, RAG, recommendations",
+      "React + React Native / Capacitor Android build",
+      "Play Store launch, OTA updates & crash analytics",
+      "Backend on Supabase / Node with secure API key handling",
+    ],
+  },
 ];
 
 function Services() {

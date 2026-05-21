@@ -6,6 +6,8 @@ import caloiImg from "@/assets/project-caloi.png";
 import tohfaverseImg from "@/assets/project-tohfaverse.png";
 import flobordImg from "@/assets/project-flobord.png";
 import unitsImg from "@/assets/project-unitsconverter.png";
+import radhikaImg from "@/assets/project-radhikafb.png";
+import qrjiImg from "@/assets/project-qrji.png";
 
 export const Route = createFileRoute("/work")({
   head: () => ({
@@ -47,7 +49,6 @@ const projects: Project[] = [
     links: [
       { label: "Website", href: "#" },
       { label: "Play Store", href: "#" },
-      { label: "GitHub", href: "https://github.com/Himanshunashtech" },
     ],
   },
   {
@@ -64,7 +65,6 @@ const projects: Project[] = [
     ],
     links: [
       { label: "Website", href: "#" },
-      { label: "GitHub", href: "https://github.com/Himanshunashtech" },
     ],
   },
   {
@@ -80,7 +80,6 @@ const projects: Project[] = [
     ],
     links: [
       { label: "Website", href: "#" },
-      { label: "GitHub", href: "https://github.com/Himanshunashtech" },
     ],
   },
   {
@@ -96,7 +95,36 @@ const projects: Project[] = [
     ],
     links: [
       { label: "Website", href: "https://www.unitsconverter.in" },
-      { label: "GitHub", href: "https://github.com/Himanshunashtech" },
+    ],
+  },
+  {
+    title: "RadhikaFB.in",
+    year: "2025",
+    tag: "Boutique / E-commerce",
+    image: radhikaImg,
+    desc: "Couture boutique showcase for a ladies' suits atelier — heritage Lucknowi craft meets modern silhouettes.",
+    bullets: [
+      "Editorial hero with cinematic atelier imagery & gold accents",
+      "Bespoke fitting booking flow + collection lookbook",
+      "Pixel-perfect typography pairing (serif display + clean sans)",
+    ],
+    links: [
+      { label: "Website", href: "https://radhikafb.in" },
+    ],
+  },
+  {
+    title: "qrji",
+    year: "2025",
+    tag: "Web Tool",
+    image: qrjiImg,
+    desc: "Pro QR code generator with batch generation, custom logos, circular rings, code snippets & 15+ QR types.",
+    bullets: [
+      "15+ QR types — URL, WiFi, Bitcoin, vCard, UPI, Events & more",
+      "Batch generation + custom logo with auto circular ring",
+      "Built-in scanner, history, and shareable code snippets",
+    ],
+    links: [
+      { label: "Website", href: "https://qrji.netlify.app" },
     ],
   },
 ];
