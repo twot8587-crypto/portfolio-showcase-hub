@@ -129,7 +129,54 @@ function Home() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="px-6 py-24 border-t-2 border-foreground/10">
+        <div className="mx-auto max-w-4xl">
+          <div className="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-3">
+            ▸ 02 — FAQ
+          </div>
+          <h2 className="font-display text-5xl md:text-7xl uppercase leading-none mb-12">
+            Questions? <span className="text-[var(--accent-orange)]">Answered.</span>
+          </h2>
+
+          <div className="space-y-4">
+            {faqs.map((f, i) => (
+              <details key={i} className="ink-card p-6 group">
+                <summary className="flex items-center justify-between cursor-pointer list-none">
+                  <span className="font-display text-lg md:text-xl pr-4">{f.q}</span>
+                  <span className="font-mono text-2xl text-[var(--accent-orange)] group-open:rotate-45 transition-transform shrink-0">+</span>
+                </summary>
+                <p className="mt-4 text-sm md:text-base text-muted-foreground leading-relaxed">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <SiteFooter />
     </div>
   );
 }
+
+const faqs = [
+  {
+    q: "What kind of projects do you take on?",
+    a: "AI-first web and mobile products — MERN stack apps, React Native apps, SaaS dashboards, and AI integrations using OpenAI, Gemini or Claude. I work best when shipping end-to-end, from idea to Play Store / production.",
+  },
+  {
+    q: "How long does a typical project take?",
+    a: "An MVP usually ships in 3–6 weeks. A full production app with auth, payments and AI features takes 6–12 weeks depending on scope. I move fast and ship in public.",
+  },
+  {
+    q: "Do you work solo or with a team?",
+    a: "I work solo on most builds and bring in trusted designers or specialists when a project needs them. You get one point of contact and zero handoff overhead.",
+  },
+  {
+    q: "What's your pricing model?",
+    a: "Fixed-price for clearly scoped projects, hourly for ongoing work. AI app builds start at ₹50k. I share a transparent quote after a short discovery call — no surprises.",
+  },
+  {
+    q: "Are you available for full-time roles?",
+    a: "Yes — open to remote full-time roles alongside freelance. If you're hiring a full-stack or AI engineer, reach out through the contact page.",
+  },
+];
