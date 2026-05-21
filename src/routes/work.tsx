@@ -30,10 +30,6 @@ type Project = {
   bullets: string[];
   links: Link[];
 };
-  desc: string;
-  bullets: string[];
-  links: Link[];
-};
 
 const projects: Project[] = [
   {
