@@ -1,62 +1,78 @@
-# Portfolio Site — "The Solo Entrepreneur" Visual Match
+# Populate Portfolio with Himanshu Sharma's Real Content
 
-Build a personal portfolio website that exactly matches the visual language of thesoloentrepreneur.in: cream/paper background with a faint blueprint grid, bold blocky display type, monospace UI text, orange highlight bar behind key words, and pill-shaped buttons with hard drop shadows.
+Replace all placeholder content across the site with the real details from the resume, keeping the existing visual style (cream/blueprint, orange accent, mono UI font) intact.
 
-Since you didn't share personal details, I'll scaffold every section with clearly-marked placeholder content (name, projects, links, stats) that you can edit in chat afterwards.
+## Identity & contact (used everywhere)
 
-## Pages (separate routes for SEO)
+- Name: **Himanshu Sharma**
+- Role: **Full Stack MERN Developer + AI Product Engineer**
+- Location: Noida, India
+- Email: sonu.hs9557@gmail.com
+- Phone: +91 9540520779
+- LinkedIn: linkedin.com/in/himanshu-sharma-799030247
+- GitHub: github.com/Himanshunashtech
 
-- `/` — Home: hero + stats + marquee tags + featured work teaser
-- `/work` — Projects grid with case-study cards
-- `/services` — What you offer (styled like the reference's "Products" section)
-- `/about` — About + contact (form + socials)
+Header logo text becomes "★ Himanshu **Sharma**". Footer signature, copyright, and all socials wired to the real URLs.
 
-Shared header (logo + nav + "Get in touch" pill button) and footer on all routes.
+## Home (`/`)
 
-## Visual system (locked tokens in `src/styles.css`)
+- Hero pill: "▶ AVAILABLE FOR FREELANCE & FULL-TIME"
+- Headline (4 lines, last line in orange highlight): `BUILD FAST. / SHIP SMART. / AI-POWERED / PRODUCTS.`
+- Handwritten sub: "Full Stack MERN dev shipping AI-first products from Noida."
+- Stats (4): `3+ YRS EXPERIENCE` · `8+ PROJECTS SHIPPED` · `1 STARTUP FOUNDED` · `500+ FOOD CATEGORIES (Caloi AI)`
+- CTAs: **View Work →** (`/work`) and **Get in touch** (`/about`)
+- Marquee: REACT · NODE.JS · MONGODB · SUPABASE · OPENAI · GEMINI · CLAUDE · REDIS · AWS · DOCKER · TAILWIND · TYPESCRIPT
+- Featured work teaser: top 3 cards (Caloi AI, Tohfaverse, FloBord) linking to `/work`
 
-- Background: `#faf6ec` (cream) with SVG blueprint-grid overlay + faint play-icon marks
-- Foreground/ink: near-black `#0e0e0e`
-- Accent: orange `#ff5a1f` (used for highlight bar, primary buttons, accent words)
-- Muted ink: `#6b6b6b` for captions
-- Display font: a heavy condensed-ish blocky sans (VT323/Press Start feel won't work — use **"Rubik Mono One"** or **"Bowlby One"** via Google Fonts for the giant headings)
-- UI font: **"JetBrains Mono"** for nav, buttons, labels, stats (the pixelated/monospace feel)
-- Body font: **"Caveat"** or **"Kalam"** for the handwritten subtitle line
-- Buttons: fully-rounded pill, 2px ink border, 4px hard offset shadow, monospace label with arrow
-- Stat cards: white card, 1px ink border, soft shadow, big mono number + small caption
-- Hero highlight: orange rectangle behind one word/phrase, slight rotation
+## Work (`/work`)
 
-## Hero composition (match exactly)
+Four real project cards, each with title, tag, year, description, and external links (Website / Play Store / GitHub where applicable):
 
-- Centered "▶ NEW VIDEO EVERY WEEK" pill chip
-- 4-line giant headline: `BUILD SMARTER. / AUTOMATE MORE. / EARN ONLINE.` with the last line wrapped in the orange highlight bar
-- Handwritten sub: "Resources, tools and ideas for solo entrepreneurs."
-- 4 stat pills in a row
-- Two CTAs: filled orange pill + outline pill
-- Marquee strip of tag chips below ("• AI • AUTOMATION • ONLINE BUSINESS • …")
+1. **Caloi AI** — AI Health · 2025 · `Most Popular` ribbon — AI calorie/macro tracker, Gemini Vision, Android live on Play Store.
+2. **Tohfaverse** — E-commerce · 2025 · `New` ribbon — Full-stack gift shop with AI gift-recommendation engine and admin panel.
+3. **FloBord** — SaaS / Productivity · 2025 — Real-time collaborative workflow board with AI subtask assistant.
+4. **UnitsConverters.in** — Web Tool · 2024 — High-performance unit converter with natural-language AI queries, 95+ PageSpeed.
 
-## Sections on other routes
+Each card lists 2–3 impact bullets from the resume (latency wins, accuracy %, perf scores) and a Case Study / Visit link.
 
-- Work: card grid with sketched-paper card style, "Most Popular" / "New" orange ribbon labels
-- Services: stacked alternating rows (image left/right) like the reference's product detail blocks with checklist bullets and price pill
-- About: portrait circle + bold heading with one orange-highlighted phrase, stat row, social buttons, simple contact form
+## Services (`/services`)
 
-## Tech notes
+Three offerings derived from skills:
 
-- TanStack Start file routes: `index.tsx`, `work.tsx`, `services.tsx`, `about.tsx`; shared `Header`/`Footer` components in `src/components/`
-- Each route gets unique `head()` meta (title, description, og:*)
-- Background grid implemented as a tiling CSS `background-image` (inline SVG data-uri) on `body`
-- Google Fonts loaded via `<link>` in `__root.tsx` head
-- All colors as oklch tokens in `src/styles.css` (`--background`, `--foreground`, `--primary` for orange, plus `--ink`, `--paper`, `--accent`)
-- Marquee tag strip = pure CSS keyframe animation
-- Form: client-only (mailto: action) unless you ask for Lovable Cloud later
+1. **Full Stack MERN Web Apps** — React, Node, Express, MongoDB, auth, REST APIs, deployment. Price pill: "From ₹40k / project".
+2. **AI Integration & Automation** — OpenAI, Gemini, Claude, vision models, chatbots, RAG. Price pill: "From ₹25k / integration".
+3. **MVP in 4–6 Weeks** — Supabase-powered MVPs with auth, payments, analytics, mobile build. Price pill: "From ₹60k / MVP".
 
-## Placeholder content I'll fill in
+Each row gets a checklist of deliverables and an alternating left/right layout.
 
-- Name: "Your Name" / Role: "Indie Maker & Designer"
-- 4 stats: Projects shipped / Years building / GitHub stars / Coffees
-- 6 project cards with placeholder titles + generated thumbnails
-- 3 services with prices
-- Social links: GitHub, X, LinkedIn, YouTube, Email (all `#` until you give me yours)
+## About (`/about`)
 
-After build, send me your real name, bio, projects, links, and stats and I'll swap them in.
+- Portrait placeholder labeled `himanshu.jpg`.
+- H1: "I build small things on the internet. **Then I ship them to real users.**"
+- Bio (handwritten font): real professional summary, condensed — 3+ years MERN, AI-first products, founder of Improvehealthtech LLC.
+- Stat row: `3+ Years` · `8+ Projects` · `1 Startup`
+- Experience timeline (compact): Naschtech (Intern, 2022–23), WebMobril (Full Stack, 2023–24), Improvehealthtech LLC (Founder, 2025–Present).
+- Education: GL Bajaj MCA (CGPA 7.4), Rajiv Academy BCA (CGPA 6.8).
+- Social pill buttons: GitHub, LinkedIn, Email (mailto:), Phone (tel:).
+- Contact form action set to `mailto:sonu.hs9557@gmail.com`.
+
+## Footer
+
+- Tagline: "Building AI-first products from Noida — and showing you how."
+- Social icons → real URLs.
+- Copyright: "© 2026 Himanshu Sharma — Built with React, caffeine, and curiosity."
+
+## SEO
+
+Update every route's `head()` with Himanshu's name in title + description (e.g. "Himanshu Sharma — Full Stack MERN & AI Developer").
+
+## Files to edit
+
+- `src/components/SiteHeader.tsx` — logo text + CTA link.
+- `src/components/SiteFooter.tsx` — real socials, tagline, copyright.
+- `src/routes/index.tsx` — hero copy, stats, marquee, featured projects.
+- `src/routes/work.tsx` — replace 6 placeholder projects with the 4 real ones + links.
+- `src/routes/services.tsx` — 3 real services with prices.
+- `src/routes/about.tsx` — bio, experience, education, real socials, mailto form.
+
+No new dependencies, no backend, no design system changes — pure content swap.
