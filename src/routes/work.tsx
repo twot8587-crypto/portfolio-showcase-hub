@@ -151,7 +151,7 @@ function Work() {
       <section className="px-6 pb-16">
         <div className="mx-auto max-w-7xl grid gap-6 md:grid-cols-2">
           {projects.map((p, i) => (
-            <article key={i} className="ink-card p-6 relative group flex flex-col">
+            <article key={i} className="ink-card p-6 relative group flex flex-col min-w-0 overflow-hidden">
               {p.ribbon && (
                 <div className="absolute -top-3 left-4 px-3 py-1 bg-[var(--accent-orange)] border-2 border-foreground rounded-full text-[10px] font-mono uppercase tracking-widest">
                   {p.ribbon}
@@ -163,11 +163,11 @@ function Work() {
               <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
                 <span>{p.tag}</span><span>{p.year}</span>
               </div>
-              <h3 className="font-display text-3xl mt-1">{p.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{p.desc}</p>
+              <h3 className="font-display text-3xl mt-1 break-words">{p.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground break-words">{p.desc}</p>
               <ul className="mt-4 space-y-1.5 text-sm font-mono">
                 {p.bullets.map((b) => (
-                  <li key={b} className="flex gap-2"><span className="text-[var(--accent-orange)]">▸</span><span>{b}</span></li>
+                  <li key={b} className="flex gap-2"><span className="text-[var(--accent-orange)] shrink-0">▸</span><span className="min-w-0 break-words">{b}</span></li>
                 ))}
               </ul>
               <div className="mt-5 flex flex-wrap gap-2">
