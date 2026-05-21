@@ -6,10 +6,10 @@ import { SiteFooter } from "@/components/SiteFooter";
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Services — Your Name" },
-      { name: "description", content: "1:1 consults, build packages, and design sprints for solo founders." },
-      { property: "og:title", content: "Services — Your Name" },
-      { property: "og:description", content: "1:1 consults, build packages, and design sprints." },
+      { title: "Services — Himanshu Sharma" },
+      { name: "description", content: "MERN web apps, AI integrations, and 4–6 week MVPs by Himanshu Sharma." },
+      { property: "og:title", content: "Services — Himanshu Sharma" },
+      { property: "og:description", content: "MERN web apps, AI integrations, and rapid MVPs." },
     ],
   }),
   component: Services,
@@ -18,39 +18,39 @@ export const Route = createFileRoute("/services")({
 const services = [
   {
     badge: "Most Popular",
-    tag: "1:1 — 60 min",
-    title: "Strategy Call",
-    price: "$199",
-    desc: "A focused call to unblock your launch, your stack, or your idea. You leave with a clear next 7-day plan.",
+    tag: "Build — Ongoing",
+    title: "Full Stack MERN Web Apps",
+    price: "From ₹40k",
+    desc: "Production-ready web apps with React, Node, Express & MongoDB — auth, REST APIs, payments, and cloud deployment included.",
     bullets: [
-      "60 minutes of deep work, just us two",
-      "Async follow-up: notes + action items",
-      "Stack & tool recommendations",
-      "Honest, no-fluff feedback",
+      "React + TypeScript frontend, mobile-first responsive UI",
+      "Secure REST APIs with JWT auth & role-based access",
+      "MongoDB / Supabase data layer with optimized queries",
+      "Deployed on AWS / Vercel with CI/CD & handover docs",
     ],
   },
   {
-    tag: "Build — 2 weeks",
-    title: "MVP Sprint",
-    price: "$2,400",
-    desc: "I design, build, and ship a single-page MVP for your idea — Next.js, Tailwind, deployed and live.",
+    tag: "AI — 1–3 weeks",
+    title: "AI Integration & Automation",
+    price: "From ₹25k",
+    desc: "Add real intelligence to your product — OpenAI, Gemini, Claude — chatbots, vision, RAG, and automated workflows.",
     bullets: [
-      "Discovery call + spec",
-      "Designed in Figma, built in TypeScript",
-      "Auth, DB, and email included",
-      "Deployed live with handover docs",
+      "OpenAI / Gemini / Claude integration into existing stack",
+      "Custom AI chatbots & RAG with vector search",
+      "Image & document analysis (Gemini Vision, OCR)",
+      "Prompt engineering, caching & cost optimization",
     ],
   },
   {
-    tag: "Design — 5 days",
-    title: "Landing Page Sprint",
-    price: "$1,200",
-    desc: "From blank canvas to a copy-tight, conversion-ready landing page in 5 working days.",
+    tag: "MVP — 4–6 weeks",
+    title: "MVP in 4–6 Weeks",
+    price: "From ₹60k",
+    desc: "From idea to live product in under 6 weeks — Supabase-powered MVP with auth, payments, analytics, and optional mobile build.",
     bullets: [
-      "Custom design (no templates)",
-      "Mobile-first, Lighthouse 95+",
-      "Copywriting included",
-      "2 rounds of revisions",
+      "Discovery + spec, design, build & launch",
+      "Supabase auth, database, storage & realtime",
+      "Payment integration (Razorpay / Stripe)",
+      "Optional Android build & Play Store launch",
     ],
   },
 ];
@@ -66,7 +66,7 @@ function Services() {
             ▸ Services — How I can help
           </div>
           <h1 className="font-display text-6xl md:text-8xl uppercase leading-none">
-            Stuff that&apos;ll <br /><span className="text-[var(--accent-orange)]">move your needle.</span>
+            Build smarter. <br /><span className="text-[var(--accent-orange)]">Ship faster.</span>
           </h1>
           <p className="mt-6 text-2xl max-w-2xl" style={{ fontFamily: "var(--font-hand)" }}>
             Pick the smallest thing that solves your biggest problem.
@@ -96,10 +96,10 @@ function Services() {
                   ))}
                 </ul>
               </div>
-              <div className="flex md:flex-col items-end md:items-stretch gap-4 md:min-w-[180px]">
-                <div className="font-display text-4xl md:text-5xl">{s.price}</div>
-                <a href="#" className="pill-btn pill-btn-primary w-full justify-center">
-                  Book now <ArrowRight className="h-4 w-4" />
+              <div className="flex md:flex-col items-end md:items-stretch gap-4 md:min-w-[200px]">
+                <div className="font-display text-3xl md:text-4xl">{s.price}</div>
+                <a href="mailto:sonu.hs9557@gmail.com" className="pill-btn pill-btn-primary w-full justify-center">
+                  Hire me <ArrowRight className="h-4 w-4" />
                 </a>
               </div>
             </div>

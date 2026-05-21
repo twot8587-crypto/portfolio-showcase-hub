@@ -6,31 +6,31 @@ import { SiteFooter } from "@/components/SiteFooter";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your Name — Solo Maker & Indie Builder" },
-      { name: "description", content: "I build small businesses on the internet. Projects, services, and ideas for solo makers." },
-      { property: "og:title", content: "Your Name — Solo Maker" },
-      { property: "og:description", content: "I build small businesses on the internet." },
+      { title: "Himanshu Sharma — Full Stack MERN & AI Developer" },
+      { name: "description", content: "Full Stack MERN Developer & AI Product Engineer from Noida. Shipping AI-first web and mobile products with React, Node, MongoDB and OpenAI/Gemini." },
+      { property: "og:title", content: "Himanshu Sharma — Full Stack MERN & AI Developer" },
+      { property: "og:description", content: "Shipping AI-first products with React, Node & Gemini." },
     ],
   }),
   component: Home,
 });
 
 const stats = [
-  { value: "24+", label: "Projects shipped" },
-  { value: "7", label: "Years building" },
-  { value: "12K+", label: "GitHub stars" },
-  { value: "∞", label: "Cups of coffee" },
+  { value: "3+", label: "Years experience" },
+  { value: "8+", label: "Projects shipped" },
+  { value: "1", label: "Startup founded" },
+  { value: "500+", label: "Food categories trained" },
 ];
 
 const tags = [
-  "AI", "AUTOMATION", "INDIE HACKING", "DESIGN", "TYPESCRIPT", "OPEN SOURCE",
-  "BASED IN BANGALORE", "BUILD IN PUBLIC", "PRODUCT DESIGN", "NO-CODE",
+  "REACT", "NODE.JS", "MONGODB", "SUPABASE", "OPENAI", "GEMINI",
+  "CLAUDE", "REDIS", "AWS", "DOCKER", "TAILWIND", "TYPESCRIPT",
 ];
 
 const featured = [
-  { title: "Notion Clone", tag: "SaaS", price: "Live" },
-  { title: "AI Resume Builder", tag: "AI Tool", price: "$19" },
-  { title: "Indie Maker Newsletter", tag: "Content", price: "Free" },
+  { title: "Caloi AI", tag: "AI Health", price: "Live on Play Store", ribbon: "Most Popular" },
+  { title: "Tohfaverse", tag: "E-commerce", price: "Live", ribbon: "New" },
+  { title: "FloBord", tag: "SaaS", price: "Live" },
 ];
 
 function Home() {
@@ -42,18 +42,18 @@ function Home() {
       <section className="relative px-6 pt-16 pb-24 text-center">
         <div className="mx-auto max-w-5xl">
           <div className="pill-chip mx-auto mb-10">
-            <Play className="h-3 w-3 fill-foreground" /> New project every month
+            <Play className="h-3 w-3 fill-foreground" /> Available for freelance &amp; full-time
           </div>
 
           <h1 className="font-display text-[14vw] md:text-[9rem] leading-[0.95] uppercase">
-            <span className="block">Build</span>
-            <span className="block">Small.</span>
-            <span className="block">Ship Fast.</span>
-            <span className="block mt-3"><span className="highlight-bar">Live Free.</span></span>
+            <span className="block">Build Fast.</span>
+            <span className="block">Ship Smart.</span>
+            <span className="block">AI-Powered</span>
+            <span className="block mt-3"><span className="highlight-bar">Products.</span></span>
           </h1>
 
           <p className="mt-10 text-3xl md:text-4xl" style={{ fontFamily: "var(--font-hand)" }}>
-            Portfolio &amp; playground of a solo maker on the internet.
+            Full Stack MERN dev shipping AI-first products from Noida.
           </p>
 
           {/* stats */}
@@ -71,8 +71,8 @@ function Home() {
             <Link to="/work" className="pill-btn pill-btn-primary">
               See my work <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link to="/services" className="pill-btn pill-btn-ghost">
-              What I offer
+            <Link to="/about" className="pill-btn pill-btn-ghost">
+              Get in touch
             </Link>
           </div>
         </div>
@@ -98,19 +98,19 @@ function Home() {
             ▸ 01 — Featured Work
           </div>
           <h2 className="font-display text-5xl md:text-7xl uppercase leading-none max-w-3xl">
-            Stuff that&apos;ll <span className="text-[var(--accent-orange)]">move the needle.</span>
+            Products I&apos;ve <span className="text-[var(--accent-orange)]">actually shipped.</span>
           </h2>
 
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {featured.map((p, i) => (
               <div key={i} className="ink-card p-6 relative">
-                {i === 0 && (
+                {p.ribbon && (
                   <div className="absolute -top-3 left-4 px-3 py-1 bg-[var(--accent-orange)] border-2 border-foreground rounded-full text-[10px] font-mono uppercase tracking-widest">
-                    Most Popular
+                    {p.ribbon}
                   </div>
                 )}
                 <div className="aspect-[4/3] rounded-lg border-2 border-dashed border-foreground/30 mb-5 flex items-center justify-center text-muted-foreground font-mono text-xs">
-                  preview.png
+                  {p.title.toLowerCase().replace(/\s+/g, "-")}.png
                 </div>
                 <div className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">{p.tag}</div>
                 <h3 className="font-display text-2xl mt-1">{p.title}</h3>

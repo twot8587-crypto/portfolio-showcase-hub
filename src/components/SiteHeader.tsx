@@ -14,9 +14,8 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-center gap-2 font-mono text-sm uppercase tracking-widest">
           <Star className="h-4 w-4 fill-foreground" />
-          <span>The</span>
-          <span className="font-bold">Solo</span>
-          <span className="text-[var(--accent-orange)] font-bold">Maker</span>
+          <span>Himanshu</span>
+          <span className="text-[var(--accent-orange)] font-bold">Sharma</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-1 rounded-full border-2 border-foreground px-2 py-1 bg-card">
