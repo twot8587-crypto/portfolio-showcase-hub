@@ -42,13 +42,13 @@ function Home() {
       <SiteHeader />
 
       {/* HERO */}
-      <section className="relative px-6 pt-16 pb-24 text-center">
+      <section className="relative px-6 pt-16 pb-24 text-center overflow-hidden">
         <div className="mx-auto max-w-5xl">
           <div className="pill-chip mx-auto mb-10">
             <Play className="h-3 w-3 fill-foreground" /> Available for freelance &amp; full-time
           </div>
 
-          <h1 className="font-display text-[14vw] md:text-[9rem] leading-[0.95] uppercase">
+          <h1 className="font-display text-[11vw] md:text-[7rem] lg:text-[9rem] leading-[0.95] uppercase break-words">
             <span className="block">Build Fast.</span>
             <span className="block">Ship Smart.</span>
             <span className="block">AI-Powered</span>
