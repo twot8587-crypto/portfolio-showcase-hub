@@ -218,9 +218,7 @@ function Play() {
     setLastNote(name);
   }
 
-    const name = NOTE_NAMES[midi % 12] + Math.floor(midi / 12 - 1);
-    setLastNote(name);
-  }
+
 
   function handlePointer(e: React.PointerEvent, isDown = false) {
     if (!dragging && !isDown) return;
