@@ -111,33 +111,63 @@ function Play() {
   const sparkIdRef = useRef(0);
 
   const [scale, setScale] = useState<Scale>("pentatonic");
-  const [wave, setWave] = useState<OscillatorType>("sine");
+  const [instrument, setInstrument] = useState<string>("Grand");
   const [rootMidi, setRootMidi] = useState(60); // C4
   const [volume, setVolume] = useState(0.25);
-  const [attack, setAttack] = useState(0.01);
-  const [release, setRelease] = useState(0.6);
+  const [reverb, setReverb] = useState(0.35);
   const [dragging, setDragging] = useState(false);
   const [sparks, setSparks] = useState<Spark[]>([]);
-  const [activeKey, setActiveKey] = useState<number | null>(null);
+  const [, setActiveKey] = useState<number | null>(null);
   const [lastNote, setLastNote] = useState<string>("—");
 
   const scaleRef = useRef(scale);
-  const waveRef = useRef(wave);
+  const instrRef = useRef(instrument);
   const rootRef = useRef(rootMidi);
   const volumeRef = useRef(volume);
-  const attackRef = useRef(attack);
-  const releaseRef = useRef(release);
+  const reverbRef = useRef(reverb);
   useEffect(() => { scaleRef.current = scale; }, [scale]);
-  useEffect(() => { waveRef.current = wave; }, [wave]);
+  useEffect(() => { instrRef.current = instrument; }, [instrument]);
   useEffect(() => { rootRef.current = rootMidi; }, [rootMidi]);
   useEffect(() => { volumeRef.current = volume; }, [volume]);
-  useEffect(() => { attackRef.current = attack; }, [attack]);
-  useEffect(() => { releaseRef.current = release; }, [release]);
+  useEffect(() => { reverbRef.current = reverb; }, [reverb]);
+
+  // Build a small impulse response for a feedback-delay "reverb" tail
+  const reverbNodeRef = useRef<ConvolverNode | null>(null);
+  const dryGainRef = useRef<GainNode | null>(null);
+  const wetGainRef = useRef<GainNode | null>(null);
 
   function ensureCtx() {
     if (!audioCtxRef.current) {
       const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-      audioCtxRef.current = new Ctx();
+      const ctx = new Ctx();
+      audioCtxRef.current = ctx;
+
+      // build impulse response (2s exponential decay)
+      const sr = ctx.sampleRate;
+      const len = sr * 2;
+      const impulse = ctx.createBuffer(2, len, sr);
+      for (let ch = 0; ch < 2; ch++) {
+        const data = impulse.getChannelData(ch);
+        for (let i = 0; i < len; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+        }
+      }
+      const convolver = ctx.createConvolver();
+      convolver.buffer = impulse;
+      const dry = ctx.createGain();
+      const wet = ctx.createGain();
+      dry.gain.value = 1 - reverbRef.current;
+      wet.gain.value = reverbRef.current;
+      dry.connect(ctx.destination);
+      convolver.connect(wet).connect(ctx.destination);
+      reverbNodeRef.current = convolver;
+      dryGainRef.current = dry;
+      wetGainRef.current = wet;
+    }
+    // keep wet/dry mix updated
+    if (dryGainRef.current && wetGainRef.current) {
+      dryGainRef.current.gain.value = 1 - reverbRef.current;
+      wetGainRef.current.gain.value = reverbRef.current;
     }
     return audioCtxRef.current!;
   }
@@ -145,26 +175,48 @@ function Play() {
   function playNote(midi: number) {
     const ctx = ensureCtx();
     const now = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = waveRef.current;
-    osc.frequency.value = midiToFreq(midi);
+    const inst = INSTRUMENTS[instrRef.current];
+    const freq = midiToFreq(midi);
 
-    const v = volumeRef.current;
-    const a = attackRef.current;
-    const r = releaseRef.current;
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(v, now + a);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + a + r);
+    // master envelope
+    const masterGain = ctx.createGain();
+    const peak = volumeRef.current;
+    const sustainLevel = Math.max(0.0001, peak * inst.sustain);
+    masterGain.gain.setValueAtTime(0.0001, now);
+    masterGain.gain.exponentialRampToValueAtTime(peak, now + inst.attack);
+    masterGain.gain.exponentialRampToValueAtTime(
+      Math.max(0.0001, sustainLevel || 0.0001),
+      now + inst.attack + inst.decay,
+    );
+    masterGain.gain.exponentialRampToValueAtTime(0.0001, now + inst.attack + inst.decay + inst.release);
 
-    // gentle lowpass for warmth
+    // brightness rolls off for higher notes — like real strings
     const filter = ctx.createBiquadFilter();
     filter.type = "lowpass";
-    filter.frequency.value = 3500;
+    filter.frequency.value = inst.filterHz;
+    filter.Q.value = 0.7;
 
-    osc.connect(filter).connect(gain).connect(ctx.destination);
-    osc.start(now);
-    osc.stop(now + a + r + 0.05);
+    masterGain.connect(filter);
+    // send to dry + reverb
+    if (dryGainRef.current) filter.connect(dryGainRef.current);
+    if (reverbNodeRef.current) filter.connect(reverbNodeRef.current);
+
+    const stopAt = now + inst.attack + inst.decay + inst.release + 0.1;
+    for (const [mult, amp, wave] of inst.partials) {
+      const osc = ctx.createOscillator();
+      osc.type = wave;
+      osc.frequency.value = freq * mult;
+      if (inst.detune) osc.detune.value = (Math.random() * 2 - 1) * inst.detune;
+      const g = ctx.createGain();
+      g.gain.value = amp;
+      osc.connect(g).connect(masterGain);
+      osc.start(now);
+      osc.stop(stopAt);
+    }
+
+    const name = NOTE_NAMES[midi % 12] + Math.floor(midi / 12 - 1);
+    setLastNote(name);
+  }
 
     const name = NOTE_NAMES[midi % 12] + Math.floor(midi / 12 - 1);
     setLastNote(name);
