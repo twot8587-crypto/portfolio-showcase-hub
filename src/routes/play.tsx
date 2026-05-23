@@ -382,18 +382,18 @@ function Play() {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Wave</label>
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                {WAVES.map((w) => (
+              <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Piano</label>
+              <div className="mt-2 grid grid-cols-2 gap-1.5">
+                {Object.keys(INSTRUMENTS).map((name) => (
                   <button
-                    key={w}
+                    key={name}
                     type="button"
-                    onClick={() => setWave(w)}
-                    className={`px-3 py-1 rounded-full border-2 border-foreground text-[10px] font-mono uppercase tracking-widest transition-colors ${
-                      wave === w ? "bg-[var(--accent-orange)] text-foreground" : "bg-card hover:bg-foreground/5"
+                    onClick={() => setInstrument(name)}
+                    className={`px-3 py-1.5 rounded-full border-2 border-foreground text-[10px] font-mono uppercase tracking-widest transition-colors ${
+                      instrument === name ? "bg-[var(--accent-orange)] text-foreground" : "bg-card hover:bg-foreground/5"
                     }`}
                   >
-                    {w}
+                    {name}
                   </button>
                 ))}
               </div>
@@ -401,12 +401,12 @@ function Play() {
 
             <Slider label={`Root note (${NOTE_NAMES[rootMidi % 12]}${Math.floor(rootMidi / 12 - 1)})`} min={36} max={84} step={1} value={rootMidi} onChange={setRootMidi} />
             <Slider label={`Volume ${(volume * 100).toFixed(0)}%`} min={0.01} max={0.5} step={0.01} value={volume} onChange={setVolume} />
-            <Slider label={`Attack ${(attack * 1000).toFixed(0)}ms`} min={0.005} max={0.3} step={0.005} value={attack} onChange={setAttack} />
-            <Slider label={`Release ${(release * 1000).toFixed(0)}ms`} min={0.1} max={2} step={0.05} value={release} onChange={setRelease} />
+            <Slider label={`Reverb ${(reverb * 100).toFixed(0)}%`} min={0} max={0.9} step={0.05} value={reverb} onChange={setReverb} />
 
             <p className="text-xs text-muted-foreground font-mono leading-relaxed pt-2 border-t-2 border-foreground/10">
-              tip: pentatonic + triangle wave = instant lo-fi. try sawtooth + blues for grit.
+              tip: try Rhodes + pentatonic for jazz, Bell + major for ambient, Pluck + blues for grit.
             </p>
+
           </div>
         </div>
       </section>
