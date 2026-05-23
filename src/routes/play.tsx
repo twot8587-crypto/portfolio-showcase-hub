@@ -36,7 +36,64 @@ const SCALES: Record<Scale, number[]> = Object.fromEntries(
   }),
 ) as Record<Scale, number[]>;
 
-const WAVES: OscillatorType[] = ["sine", "triangle", "square", "sawtooth"];
+// Piano-style instrument presets — each is a recipe for additive synthesis
+// (multiple oscillators per note) + a percussive envelope. Gives real piano feel
+// rather than a raw beeping oscillator.
+type Instrument = {
+  label: string;
+  // partials: [harmonic-multiplier, relative-amplitude, wave]
+  partials: Array<[number, number, OscillatorType]>;
+  attack: number;     // seconds
+  decay: number;      // seconds to sustain level
+  sustain: number;    // 0..1 of peak
+  release: number;    // seconds
+  filterHz: number;
+  detune?: number;    // cents of slight detune for chorus warmth
+};
+
+const INSTRUMENTS: Record<string, Instrument> = {
+  "Grand": {
+    label: "Grand",
+    partials: [[1, 1, "triangle"], [2, 0.45, "sine"], [3, 0.18, "sine"], [4, 0.08, "sine"]],
+    attack: 0.004, decay: 0.6, sustain: 0.0, release: 0.9, filterHz: 5000,
+  },
+  "Upright": {
+    label: "Upright",
+    partials: [[1, 1, "triangle"], [2, 0.3, "triangle"], [3, 0.12, "sine"]],
+    attack: 0.006, decay: 0.5, sustain: 0.0, release: 0.7, filterHz: 3500,
+  },
+  "Rhodes": {
+    label: "Rhodes",
+    partials: [[1, 1, "sine"], [2, 0.6, "sine"], [4, 0.25, "sine"], [6, 0.08, "sine"]],
+    attack: 0.005, decay: 0.8, sustain: 0.15, release: 1.2, filterHz: 2800,
+  },
+  "Electric": {
+    label: "Electric",
+    partials: [[1, 1, "sawtooth"], [2, 0.35, "triangle"], [3, 0.12, "sine"]],
+    attack: 0.003, decay: 0.4, sustain: 0.05, release: 0.6, filterHz: 2200,
+  },
+  "Music Box": {
+    label: "Music Box",
+    partials: [[1, 1, "sine"], [3, 0.55, "sine"], [5, 0.25, "sine"], [7, 0.1, "sine"]],
+    attack: 0.002, decay: 0.35, sustain: 0.0, release: 0.5, filterHz: 6000,
+  },
+  "Pad": {
+    label: "Pad",
+    partials: [[1, 1, "sawtooth"], [2, 0.5, "sawtooth"], [3, 0.3, "triangle"]],
+    attack: 0.25, decay: 0.4, sustain: 0.7, release: 1.6, filterHz: 1800,
+    detune: 8,
+  },
+  "Pluck": {
+    label: "Pluck",
+    partials: [[1, 1, "triangle"], [2, 0.5, "square"], [3, 0.15, "sine"]],
+    attack: 0.001, decay: 0.18, sustain: 0.0, release: 0.25, filterHz: 4000,
+  },
+  "Bell": {
+    label: "Bell",
+    partials: [[1, 1, "sine"], [2.76, 0.5, "sine"], [5.4, 0.25, "sine"], [8.93, 0.1, "sine"]],
+    attack: 0.002, decay: 1.2, sustain: 0.0, release: 1.8, filterHz: 7000,
+  },
+};
 
 const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
@@ -54,33 +111,63 @@ function Play() {
   const sparkIdRef = useRef(0);
 
   const [scale, setScale] = useState<Scale>("pentatonic");
-  const [wave, setWave] = useState<OscillatorType>("sine");
+  const [instrument, setInstrument] = useState<string>("Grand");
   const [rootMidi, setRootMidi] = useState(60); // C4
   const [volume, setVolume] = useState(0.25);
-  const [attack, setAttack] = useState(0.01);
-  const [release, setRelease] = useState(0.6);
+  const [reverb, setReverb] = useState(0.35);
   const [dragging, setDragging] = useState(false);
   const [sparks, setSparks] = useState<Spark[]>([]);
-  const [activeKey, setActiveKey] = useState<number | null>(null);
+  const [, setActiveKey] = useState<number | null>(null);
   const [lastNote, setLastNote] = useState<string>("—");
 
   const scaleRef = useRef(scale);
-  const waveRef = useRef(wave);
+  const instrRef = useRef(instrument);
   const rootRef = useRef(rootMidi);
   const volumeRef = useRef(volume);
-  const attackRef = useRef(attack);
-  const releaseRef = useRef(release);
+  const reverbRef = useRef(reverb);
   useEffect(() => { scaleRef.current = scale; }, [scale]);
-  useEffect(() => { waveRef.current = wave; }, [wave]);
+  useEffect(() => { instrRef.current = instrument; }, [instrument]);
   useEffect(() => { rootRef.current = rootMidi; }, [rootMidi]);
   useEffect(() => { volumeRef.current = volume; }, [volume]);
-  useEffect(() => { attackRef.current = attack; }, [attack]);
-  useEffect(() => { releaseRef.current = release; }, [release]);
+  useEffect(() => { reverbRef.current = reverb; }, [reverb]);
+
+  // Build a small impulse response for a feedback-delay "reverb" tail
+  const reverbNodeRef = useRef<ConvolverNode | null>(null);
+  const dryGainRef = useRef<GainNode | null>(null);
+  const wetGainRef = useRef<GainNode | null>(null);
 
   function ensureCtx() {
     if (!audioCtxRef.current) {
       const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-      audioCtxRef.current = new Ctx();
+      const ctx = new Ctx();
+      audioCtxRef.current = ctx;
+
+      // build impulse response (2s exponential decay)
+      const sr = ctx.sampleRate;
+      const len = sr * 2;
+      const impulse = ctx.createBuffer(2, len, sr);
+      for (let ch = 0; ch < 2; ch++) {
+        const data = impulse.getChannelData(ch);
+        for (let i = 0; i < len; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+        }
+      }
+      const convolver = ctx.createConvolver();
+      convolver.buffer = impulse;
+      const dry = ctx.createGain();
+      const wet = ctx.createGain();
+      dry.gain.value = 1 - reverbRef.current;
+      wet.gain.value = reverbRef.current;
+      dry.connect(ctx.destination);
+      convolver.connect(wet).connect(ctx.destination);
+      reverbNodeRef.current = convolver;
+      dryGainRef.current = dry;
+      wetGainRef.current = wet;
+    }
+    // keep wet/dry mix updated
+    if (dryGainRef.current && wetGainRef.current) {
+      dryGainRef.current.gain.value = 1 - reverbRef.current;
+      wetGainRef.current.gain.value = reverbRef.current;
     }
     return audioCtxRef.current!;
   }
@@ -88,30 +175,50 @@ function Play() {
   function playNote(midi: number) {
     const ctx = ensureCtx();
     const now = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = waveRef.current;
-    osc.frequency.value = midiToFreq(midi);
+    const inst = INSTRUMENTS[instrRef.current];
+    const freq = midiToFreq(midi);
 
-    const v = volumeRef.current;
-    const a = attackRef.current;
-    const r = releaseRef.current;
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(v, now + a);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + a + r);
+    // master envelope
+    const masterGain = ctx.createGain();
+    const peak = volumeRef.current;
+    const sustainLevel = Math.max(0.0001, peak * inst.sustain);
+    masterGain.gain.setValueAtTime(0.0001, now);
+    masterGain.gain.exponentialRampToValueAtTime(peak, now + inst.attack);
+    masterGain.gain.exponentialRampToValueAtTime(
+      Math.max(0.0001, sustainLevel || 0.0001),
+      now + inst.attack + inst.decay,
+    );
+    masterGain.gain.exponentialRampToValueAtTime(0.0001, now + inst.attack + inst.decay + inst.release);
 
-    // gentle lowpass for warmth
+    // brightness rolls off for higher notes — like real strings
     const filter = ctx.createBiquadFilter();
     filter.type = "lowpass";
-    filter.frequency.value = 3500;
+    filter.frequency.value = inst.filterHz;
+    filter.Q.value = 0.7;
 
-    osc.connect(filter).connect(gain).connect(ctx.destination);
-    osc.start(now);
-    osc.stop(now + a + r + 0.05);
+    masterGain.connect(filter);
+    // send to dry + reverb
+    if (dryGainRef.current) filter.connect(dryGainRef.current);
+    if (reverbNodeRef.current) filter.connect(reverbNodeRef.current);
+
+    const stopAt = now + inst.attack + inst.decay + inst.release + 0.1;
+    for (const [mult, amp, wave] of inst.partials) {
+      const osc = ctx.createOscillator();
+      osc.type = wave;
+      osc.frequency.value = freq * mult;
+      if (inst.detune) osc.detune.value = (Math.random() * 2 - 1) * inst.detune;
+      const g = ctx.createGain();
+      g.gain.value = amp;
+      osc.connect(g).connect(masterGain);
+      osc.start(now);
+      osc.stop(stopAt);
+    }
 
     const name = NOTE_NAMES[midi % 12] + Math.floor(midi / 12 - 1);
     setLastNote(name);
   }
+
+
 
   function handlePointer(e: React.PointerEvent, isDown = false) {
     if (!dragging && !isDown) return;
@@ -275,18 +382,18 @@ function Play() {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Wave</label>
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                {WAVES.map((w) => (
+              <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Piano</label>
+              <div className="mt-2 grid grid-cols-2 gap-1.5">
+                {Object.keys(INSTRUMENTS).map((name) => (
                   <button
-                    key={w}
+                    key={name}
                     type="button"
-                    onClick={() => setWave(w)}
-                    className={`px-3 py-1 rounded-full border-2 border-foreground text-[10px] font-mono uppercase tracking-widest transition-colors ${
-                      wave === w ? "bg-[var(--accent-orange)] text-foreground" : "bg-card hover:bg-foreground/5"
+                    onClick={() => setInstrument(name)}
+                    className={`px-3 py-1.5 rounded-full border-2 border-foreground text-[10px] font-mono uppercase tracking-widest transition-colors ${
+                      instrument === name ? "bg-[var(--accent-orange)] text-foreground" : "bg-card hover:bg-foreground/5"
                     }`}
                   >
-                    {w}
+                    {name}
                   </button>
                 ))}
               </div>
@@ -294,12 +401,12 @@ function Play() {
 
             <Slider label={`Root note (${NOTE_NAMES[rootMidi % 12]}${Math.floor(rootMidi / 12 - 1)})`} min={36} max={84} step={1} value={rootMidi} onChange={setRootMidi} />
             <Slider label={`Volume ${(volume * 100).toFixed(0)}%`} min={0.01} max={0.5} step={0.01} value={volume} onChange={setVolume} />
-            <Slider label={`Attack ${(attack * 1000).toFixed(0)}ms`} min={0.005} max={0.3} step={0.005} value={attack} onChange={setAttack} />
-            <Slider label={`Release ${(release * 1000).toFixed(0)}ms`} min={0.1} max={2} step={0.05} value={release} onChange={setRelease} />
+            <Slider label={`Reverb ${(reverb * 100).toFixed(0)}%`} min={0} max={0.9} step={0.05} value={reverb} onChange={setReverb} />
 
             <p className="text-xs text-muted-foreground font-mono leading-relaxed pt-2 border-t-2 border-foreground/10">
-              tip: pentatonic + triangle wave = instant lo-fi. try sawtooth + blues for grit.
+              tip: try Rhodes + pentatonic for jazz, Bell + major for ambient, Pluck + blues for grit.
             </p>
+
           </div>
         </div>
       </section>
