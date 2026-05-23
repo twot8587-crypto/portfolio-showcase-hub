@@ -36,7 +36,64 @@ const SCALES: Record<Scale, number[]> = Object.fromEntries(
   }),
 ) as Record<Scale, number[]>;
 
-const WAVES: OscillatorType[] = ["sine", "triangle", "square", "sawtooth"];
+// Piano-style instrument presets — each is a recipe for additive synthesis
+// (multiple oscillators per note) + a percussive envelope. Gives real piano feel
+// rather than a raw beeping oscillator.
+type Instrument = {
+  label: string;
+  // partials: [harmonic-multiplier, relative-amplitude, wave]
+  partials: Array<[number, number, OscillatorType]>;
+  attack: number;     // seconds
+  decay: number;      // seconds to sustain level
+  sustain: number;    // 0..1 of peak
+  release: number;    // seconds
+  filterHz: number;
+  detune?: number;    // cents of slight detune for chorus warmth
+};
+
+const INSTRUMENTS: Record<string, Instrument> = {
+  "Grand": {
+    label: "Grand",
+    partials: [[1, 1, "triangle"], [2, 0.45, "sine"], [3, 0.18, "sine"], [4, 0.08, "sine"]],
+    attack: 0.004, decay: 0.6, sustain: 0.0, release: 0.9, filterHz: 5000,
+  },
+  "Upright": {
+    label: "Upright",
+    partials: [[1, 1, "triangle"], [2, 0.3, "triangle"], [3, 0.12, "sine"]],
+    attack: 0.006, decay: 0.5, sustain: 0.0, release: 0.7, filterHz: 3500,
+  },
+  "Rhodes": {
+    label: "Rhodes",
+    partials: [[1, 1, "sine"], [2, 0.6, "sine"], [4, 0.25, "sine"], [6, 0.08, "sine"]],
+    attack: 0.005, decay: 0.8, sustain: 0.15, release: 1.2, filterHz: 2800,
+  },
+  "Electric": {
+    label: "Electric",
+    partials: [[1, 1, "sawtooth"], [2, 0.35, "triangle"], [3, 0.12, "sine"]],
+    attack: 0.003, decay: 0.4, sustain: 0.05, release: 0.6, filterHz: 2200,
+  },
+  "Music Box": {
+    label: "Music Box",
+    partials: [[1, 1, "sine"], [3, 0.55, "sine"], [5, 0.25, "sine"], [7, 0.1, "sine"]],
+    attack: 0.002, decay: 0.35, sustain: 0.0, release: 0.5, filterHz: 6000,
+  },
+  "Pad": {
+    label: "Pad",
+    partials: [[1, 1, "sawtooth"], [2, 0.5, "sawtooth"], [3, 0.3, "triangle"]],
+    attack: 0.25, decay: 0.4, sustain: 0.7, release: 1.6, filterHz: 1800,
+    detune: 8,
+  },
+  "Pluck": {
+    label: "Pluck",
+    partials: [[1, 1, "triangle"], [2, 0.5, "square"], [3, 0.15, "sine"]],
+    attack: 0.001, decay: 0.18, sustain: 0.0, release: 0.25, filterHz: 4000,
+  },
+  "Bell": {
+    label: "Bell",
+    partials: [[1, 1, "sine"], [2.76, 0.5, "sine"], [5.4, 0.25, "sine"], [8.93, 0.1, "sine"]],
+    attack: 0.002, decay: 1.2, sustain: 0.0, release: 1.8, filterHz: 7000,
+  },
+};
 
 const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
