@@ -16,13 +16,25 @@ export const Route = createFileRoute("/play")({
 
 type Scale = "major" | "minor" | "pentatonic" | "blues" | "chromatic";
 
-const SCALES: Record<Scale, number[]> = {
-  major: [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23, 24],
-  minor: [0, 2, 3, 5, 7, 8, 10, 12, 14, 15, 17, 19, 20, 22, 24],
-  pentatonic: [0, 2, 4, 7, 9, 12, 14, 16, 19, 21, 24, 26, 28, 31, 33],
-  blues: [0, 3, 5, 6, 7, 10, 12, 15, 17, 18, 19, 22, 24, 27, 29],
-  chromatic: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+const SCALE_PATTERNS: Record<Scale, number[]> = {
+  major: [0, 2, 4, 5, 7, 9, 11],
+  minor: [0, 2, 3, 5, 7, 8, 10],
+  pentatonic: [0, 2, 4, 7, 9],
+  blues: [0, 3, 5, 6, 7, 10],
+  chromatic: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
 };
+
+// Build ~5 octaves of keys for a chess-keyboard density
+const SCALES: Record<Scale, number[]> = Object.fromEntries(
+  (Object.keys(SCALE_PATTERNS) as Scale[]).map((s) => {
+    const pattern = SCALE_PATTERNS[s];
+    const out: number[] = [];
+    for (let oct = 0; oct < 5; oct++) {
+      for (const p of pattern) out.push(p + oct * 12);
+    }
+    return [s, out];
+  }),
+) as Record<Scale, number[]>;
 
 const WAVES: OscillatorType[] = ["sine", "triangle", "square", "sawtooth"];
 
