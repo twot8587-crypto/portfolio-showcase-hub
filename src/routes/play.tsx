@@ -195,21 +195,9 @@ function Play() {
               }}
             >
               {/* key columns */}
-              <div className="absolute inset-0 grid" style={{ gridTemplateColumns: `repeat(${steps.length}, 1fr)` }}>
+              <div className="absolute inset-0 grid pointer-events-none" style={{ gridTemplateColumns: `repeat(${steps.length}, 1fr)` }}>
                 {steps.map((_, i) => (
-                  <motion.div
-                    key={i}
-                    animate={{
-                      backgroundColor: activeKey === i ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0)",
-                      borderColor: activeKey === i ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.06)",
-                    }}
-                    transition={{ duration: 0.2 }}
-                    className="border-l h-full flex items-end justify-center pb-2"
-                  >
-                    <span className="font-mono text-[9px] uppercase tracking-widest text-white/30">
-                      {NOTE_NAMES[(rootMidi + steps[i]) % 12]}
-                    </span>
-                  </motion.div>
+                  <div key={i} className="border-l border-white/5 h-full" />
                 ))}
               </div>
 
