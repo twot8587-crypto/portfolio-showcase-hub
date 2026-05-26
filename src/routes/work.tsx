@@ -8,6 +8,28 @@ import flobordImg from "@/assets/project-flobord.png";
 import unitsImg from "@/assets/project-unitsconverter.png";
 import radhikaImg from "@/assets/project-radhikafb.png";
 import qrjiImg from "@/assets/project-qrji.png";
+import appCaloiImg from "@/assets/app-caloi.png";
+import appVelocisImg from "@/assets/app-velocis.png";
+
+const apps = [
+  {
+    title: "Caloi AI",
+    tag: "AI Health · Android",
+    desc: "AI calorie & macro tracker with Gemini Vision — live on Google Play.",
+    image: appCaloiImg,
+    href: "https://play.google.com/store/apps/details?id=com.caloi.app",
+    cta: "Get on Play Store",
+  },
+  {
+    title: "Velocis",
+    tag: "Productivity · iOS & Android",
+    desc: "All-in-one productivity companion — plan, track, and conquer every goal.",
+    image: appVelocisImg,
+    href: "https://play.google.com/store/apps/details?id=com.velocis.app",
+    cta: "Get on Play Store",
+    secondary: { label: "Visit site", href: "https://velosis.lovable.app/" },
+  },
+];
 
 export const Route = createFileRoute("/work")({
   head: () => ({
