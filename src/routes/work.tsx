@@ -204,6 +204,43 @@ function Work() {
         </div>
       </section>
 
+      {/* APPS SECTION */}
+      <section className="px-6 pb-24 border-t-2 border-foreground/10 pt-16">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-3">
+            ▸ Apps — Live on stores
+          </div>
+          <h2 className="font-display text-5xl md:text-7xl uppercase leading-none">
+            Apps you can <span className="text-[var(--accent-orange)]">install today.</span>
+          </h2>
+
+          <div className="mt-12 grid gap-8 md:grid-cols-2">
+            {apps.map((a) => (
+              <article key={a.title} className="ink-card p-6 flex flex-col overflow-hidden">
+                <div className="rounded-2xl border-2 border-foreground/80 overflow-hidden bg-card aspect-[16/10]">
+                  <img src={a.image} alt={`${a.title} app screenshots`} loading="lazy" className="w-full h-full object-cover" />
+                </div>
+                <div className="mt-5 text-[10px] font-mono uppercase tracking-widest text-muted-foreground">{a.tag}</div>
+                <h3 className="font-display text-3xl mt-1">{a.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{a.desc}</p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  <a href={a.href} target="_blank" rel="noopener noreferrer" className="pill-btn pill-btn-primary text-xs px-3 py-1.5">
+                    ▶ {a.cta} <ArrowUpRight className="h-3 w-3" />
+                  </a>
+                  {a.secondary && (
+                    <a href={a.secondary.href} target="_blank" rel="noopener noreferrer" className="pill-btn pill-btn-ghost text-xs px-3 py-1.5">
+                      {a.secondary.label} <ArrowUpRight className="h-3 w-3" />
+                    </a>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+
       <SiteFooter />
     </div>
   );
