@@ -104,12 +104,12 @@ function Home() {
             Products I&apos;ve <span className="text-[var(--accent-orange)]">actually shipped.</span>
           </h2>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-12 grid gap-8 md:grid-cols-2">
             {featured.map((p, i) => (
               <Link
                 key={i}
                 to="/work"
-                className="ink-card relative overflow-hidden aspect-[4/5] block group"
+                className="ink-card relative overflow-hidden aspect-[16/10] block group"
               >
                 {p.ribbon && (
                   <div className="absolute top-4 left-4 z-10 px-3 py-1 bg-[var(--accent-orange)] border-2 border-foreground rounded-full text-[10px] font-mono uppercase tracking-widest">
@@ -120,7 +120,7 @@ function Home() {
                   src={p.image}
                   alt={`${p.title} screenshot`}
                   loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="absolute inset-0 w-full h-full object-contain bg-card transition-transform duration-500 group-hover:scale-105"
                 />
               </Link>
             ))}
