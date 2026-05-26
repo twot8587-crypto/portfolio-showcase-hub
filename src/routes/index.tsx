@@ -106,24 +106,23 @@ function Home() {
 
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {featured.map((p, i) => (
-              <div key={i} className="ink-card p-6 relative">
+              <Link
+                key={i}
+                to="/work"
+                className="ink-card relative overflow-hidden aspect-[4/5] block group"
+              >
                 {p.ribbon && (
-                  <div className="absolute -top-3 left-4 px-3 py-1 bg-[var(--accent-orange)] border-2 border-foreground rounded-full text-[10px] font-mono uppercase tracking-widest">
+                  <div className="absolute top-4 left-4 z-10 px-3 py-1 bg-[var(--accent-orange)] border-2 border-foreground rounded-full text-[10px] font-mono uppercase tracking-widest">
                     {p.ribbon}
                   </div>
                 )}
-                <div className="rounded-2xl border-2 border-foreground/80 mb-5 overflow-hidden bg-card">
-                  <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" className="block w-full h-auto" />
-                </div>
-                <div className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">{p.tag}</div>
-                <h3 className="font-display text-2xl mt-1">{p.title}</h3>
-                <div className="mt-4 flex items-center justify-between">
-                  <span className="font-mono text-sm">{p.price}</span>
-                  <Link to="/work" className="pill-btn pill-btn-primary text-xs px-3 py-1.5">
-                    View <ArrowRight className="h-3 w-3" />
-                  </Link>
-                </div>
-              </div>
+                <img
+                  src={p.image}
+                  alt={`${p.title} screenshot`}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </Link>
             ))}
           </div>
         </div>
